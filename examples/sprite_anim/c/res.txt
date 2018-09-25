@@ -1,0 +1,22 @@
+#include <datacert.h>
+
+INFO METAINFO
+{
+  "Title"               : "spriteAnim"
+  "Vendor"              : "Simon Kågström"
+  "Copyright info"      : "(c) Simon Kågström 2004"
+  "Program version"     : "1.0"
+  "Help"                : "Help me!"
+}
+
+PLAYER_FRAMES    SPRITE      FORMAT RGB332     "/sprite.png"
+
+SECTION DATA
+// *****************************************
+// THE FONT
+// *****************************************
+//FONTA DATA                              "systemfont4x6.fnt"
+
+// Tiles and sprites
+//
+BG_TILES         TILESET 8 8 FORMAT RGB332     "/tiles.png"

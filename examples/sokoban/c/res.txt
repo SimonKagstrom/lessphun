@@ -1,0 +1,24 @@
+//#include <datacert.h>
+
+INFO METAINFO
+{
+  "Title"               : "Sokoban"
+  "Vendor"              : "Simon Kågström"
+  "Copyright info"      : "(c) Simon Kågström 2004"
+  "Program version"     : "1.0"
+  "Help"                : "www.bth.se"
+}
+
+//	***********************************************************************************************
+//	CERTIFICATION STUFF
+//	***********************************************************************************************
+//DATACERT_AND_SECURITY_RESOURCE
+//CREDITS DATA { FILL 32,0}
+
+SECTION DATA
+
+// Tiles and sprites
+//
+BG_TILES         TILESET 8 8 FORMAT RGB332     "/tiles.png"
+PLAYER_SPRITE    SPRITE      FORMAT RGB332     "/player.png"
+BALL_SPRITE      SPRITE      FORMAT RGB332     "/ball.png"

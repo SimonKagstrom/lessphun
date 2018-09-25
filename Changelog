@@ -1,0 +1,24 @@
+Lessphun (4)
+        * The new release of Cibyl has changed the System.currentTimeMillis()
+        definition, fix the vGetTickCount() to match that (but still be more
+        like the Mophun version)
+
+	-- Simon Kagstrom <simon.kagstrom@gmail.com>, 
+
+
+Lessphun (3)
+	* Renamed the Lorminator dash midlet
+
+	* Enable fullscreen-mode
+
+	-- Simon Kagstrom <simon.kagstrom@gmail.com>,
+
+Lessphun (2)
+	* Fixed the build system to match that of newer versions of Cibyl
+
+	* A bug in the lorminator dash example that prohibited placing of
+	bombs in some occations was fixed. It was really just a typo...
+
+	-- Simon Kagstrom <simon.kagstrom@gmail.com>, Fri Dec  1 13:33:05 CET 2006
+
+Lessphun (1)

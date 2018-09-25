@@ -1,0 +1,3 @@
+This is a template project. This is used for starting new ports to
+Lessphun. Compiling it by itself will fail since there is no 'main'
+method.

@@ -1,0 +1,157 @@
+#!/usr/bin/env python
+######################################################################
+##
+## Copyright (C) 2006,  Blekinge Institute of Technology
+##
+## Filename:      lorc
+## Author:        Simon Kagstrom <ska@bth.se>
+## Description:   Lorc is an implementation of Morc for Lessphun
+##
+## $Id: lorc 11316 2006-09-27 10:53:37Z ska $
+##
+######################################################################
+import sys, re, os
+
+def usage():
+    print """Usage: lorc RESOURCE_PATH INFILE
+
+Compiles INFILE to a C file and a C header file res.[ch]. Used to
+compile resource files for lessphun.
+    """
+    sys.exit(0)
+
+resourcePath = "."
+
+class Resource:
+    pass
+
+class Sprite(Resource):
+    def __init__(self, name, format, path):
+	self.name = name
+	self.format = format
+	self.imageFilename = path
+	self.fileSize = os.stat("%s/%s" % (resourcePath, path.strip('"'))).st_size
+    def getDefs(self):
+	return """extern SPRITE %s;
+#define %s_SIZE %d
+#define %s_UNPACKED_SIZE %d
+""" % (self.name, self.name, self.fileSize, self.name, self.fileSize)
+    def getDeclaration(self):
+	return """SPRITE %s;
+#define %s_FILE %s
+""" % (self.name, self.name, self.imageFilename)
+    def getInitCall(self):
+	return """
+	LPH_initSprite(&%s, %s_FILE);\n""" % (self.name, self.name)
+
+
+class Tileset(Resource):
+    def __init__(self, name, w, h, format, path):
+	self.name = name
+	self.width = w
+	self.height = h
+	self.format = format
+	self.imageFilename = path
+    def getDefs(self):
+	return """#define %s %s
+#define %s_FORMAT 0
+""" % (self.name, self.imageFilename, self.name)
+    def getDeclaration(self):
+	return ""
+    def getInitCall(self):
+	return ""
+
+class Font(Resource):
+    def __init__(self, name, width, height, path):
+	self.name = name
+	self.filePath = path
+	self.width = long(width)
+	self.height = long(height)
+    def getDefs(self):
+	return """extern VMGPFONT %s;\n""" % (self.name)
+    def getDeclaration(self):
+	return """VMGPFONT %s;\n""" % (self.name)
+    def getInitCall(self):
+	return """
+	LPH_initFont(&%s, %s, %d, %d);\n""" % (self.name, self.filePath, self.width, self.height)
+
+class Data(Resource):
+    def __init__(self, name, path):
+	self.name = name
+	self.filePath = path
+	self.fileSize = os.stat("%s/%s" % (resourcePath, path.strip('"'))).st_size
+    def getDefs(self):
+	return """#define %s %s
+#define %s_SIZE %d
+#define %s_UNPACKED_SIZE %d
+""" % (self.name, self.filePath, self.name, self.fileSize, self.name, self.fileSize)
+    def getDeclaration(self):
+	return ""
+    def getInitCall(self):
+	return ""
+
+
+def writeOutfiles(outCFile, outHeader):
+    # Write headers
+    outCFile.write("/* This file is generated, DON'T EDIT! */\n")
+    outHeader.write("/* This file is generated, DON'T EDIT! */\n")
+    outHeader.write("#include <lessphun.h>\n")
+    outCFile.write('#include "res.h"\n')
+
+
+    for item in objects:
+	outHeader.write(item.getDefs())
+
+    for item in objects:
+	outCFile.write(item.getDeclaration())
+
+    outCFile.write("""\n\nstatic NOPH_ResourceManager_t resourceManager;
+
+void LPH_res_init(void) {
+     resourceManager = NOPH_ResourceManager_getInstance();
+""")
+
+    for item in objects:
+	outCFile.write(item.getInitCall())
+    outCFile.write("}\n")
+
+if len(sys.argv) < 3:
+    usage()
+
+spriteRegexp = re.compile("([a-z,A-Z,0-9,_]+)[ ,\t,PACKED]+SPRITE[ ,\t]+FORMAT[ ,\t]+([a-z,A-Z,0-9]+)[ ,\t]+([\",\",/,a-z,A-Z,\-,\.,0-9]+)")
+tilesetRegexp = re.compile("([a-z,A-Z,0-9,_]+)[ ,\t,PACKED]+TILESET[ ,\t]+([0-9]+)[ ,\t]+([0-9]+)[ ,\t]+FORMAT[ ,\t]+([a-z,A-Z,0-9]+)[ ,\t]+([\",\",/,a-z,A-Z,\-,\.,0-9]+)")
+dataRegexp = re.compile("([a-z,A-Z,0-9,_]+)[ ,\t,PACKED]+DATA[ ,\t]+([\",\",/,a-z,A-Z,\-,\.,0-9]+)")
+fontRegexp = re.compile("([a-z,A-Z,0-9,_]+)[ ,\t]+FONT[ ,\t]+([0-9]+)[ ,\t]+([0-9]+)[ ,\t]+([\",\",/,a-z,A-Z,\-,\.,0-9]+)")
+resourcePath = sys.argv[1]
+infile = open(sys.argv[2])
+outCFile = file("res.c", "w+")
+outHeader = file("res.h", "w+")
+
+objects = []
+try:
+    for line in infile:
+	match = spriteRegexp.match(line)
+	if match:
+	    s = Sprite(match.group(1), match.group(2), match.group(3))
+	    objects.append(s)
+	match = tilesetRegexp.match(line)
+	if match:
+	    s = Tileset(match.group(1), match.group(2), match.group(3), match.group(4), match.group(5))
+	    objects.append(s)
+	match = dataRegexp.match(line)
+	if match:
+	    s = Data(match.group(1), match.group(2))
+	    objects.append(s)
+	match = fontRegexp.match(line)
+	if match:
+	    s = Font(match.group(1), match.group(2), match.group(3), match.group(4))
+	    objects.append(s)
+finally:
+    infile.close()
+
+# Write the outfiles
+try:
+    writeOutfiles(outCFile, outHeader)
+finally:
+    outCFile.close()
+    outHeader.close()

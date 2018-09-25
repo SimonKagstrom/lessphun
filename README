@@ -1,0 +1,31 @@
+Lessphun is an implementation of the Mophun API for Cibyl, "Lessphun
+is Mophun". Lessphun is documented on a wiki,
+
+Lessphun: http://spel.bth.se/index.php/Lessphun
+Cibyl:    http://spel.bth.se/index.php/Cibyl
+
+
+Setting up Lessphun
+-------------------
+1. First setup Cibyl,
+
+   $ cd path_to_cibyl/
+   $ source env.sh
+
+2. Then setup Lessphun,
+
+   $ cd path_to_lessphun/
+   $ source env.sh
+
+3. You can now compile one of the examples, e.g.,
+
+   $ cd examples/lorminator_dash/
+   $ make
+
+4. To run the example, use the Makefile rule 'run':
+
+   $ make run
+
+--
+// Simon Kagstrom <simon.kagstrom@bth.se>
+

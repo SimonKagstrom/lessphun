@@ -1,0 +1,18 @@
+Implement highscores
+- Plus load/save
+
+Player management
+- Add/remove?
+- Save to disk
+
+Fix bug with bombs looking like ghosts
+- And find out how it occurs
+
+Bombs are also sometimes not active
+- Conveyor belts?
+
+Loading and saving of the state
+- Needed?
+
+Configuration, loading and saving.
+- F.i. sound

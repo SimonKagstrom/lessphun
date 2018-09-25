@@ -1,0 +1,31 @@
+This is the Lorminator dash game, a boulder dash clone.
+
+File format
+-----------
+The file format is similar to ELF files.
+
+The layout is as follows:
+
+ file_header
+ section_table
+   section_entry[0]
+   ...
+   section_entry[n]
+ level_set[0] (typically)
+ ...
+ level_set[n]
+ level[0]
+   teleporter[0]
+   ...
+   teleporter[n]
+   special_idx[0]
+   ...
+   special_idx[n]
+ ...
+ level[n]
+ level_data[0]
+ ...
+ level_data[n]
+ special[0]
+ ...
+ special[n]

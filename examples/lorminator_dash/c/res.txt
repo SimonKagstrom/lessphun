@@ -1,0 +1,32 @@
+//#include <datacert.h>
+
+INFO METAINFO
+{
+  "Title"               : "Boulder"
+  "Vendor"              : "Simon Kågström"
+  "Copyright info"      : "(c) Simon Kågström 2004"
+  "Program version"     : "1.0"
+  "Help"                : "www.bth.se"
+}
+
+SPRITE_FRAMES    PACKED SPRITE      FORMAT RGB332     "/sprites-x2.png"
+LOGO             PACKED SPRITE      FORMAT RGB332     "/logo.png"
+BG_TILES         PACKED TILESET 8 8 FORMAT RGB332     "/tiles-x2.png"
+
+LEVEL_0          PACKED DATA   "/level.0.dat"
+LEVEL_1          PACKED DATA   "/level.1.dat"
+LEVEL_2          PACKED DATA   "/level.2.dat"
+
+SECTION DATA
+// *****************************************
+// THE FONT
+// *****************************************
+// Font, 4x6 pixels (32 chars per line)
+SMALL_FONT     FONT 4 6				 "/4x6-font.png"
+
+// Tiles and sprites
+//
+
+
+// Audio
+//BD_SONG          DATA                          "audio/boulder.mid"
